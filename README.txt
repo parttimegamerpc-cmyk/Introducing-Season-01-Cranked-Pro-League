@@ -1,18 +1,17 @@
-CRANKED PRO LEAGUE — GITHUB PAGES IMAGE FIX
+CRANKED PRO LEAGUE — SELF-CONTAINED GITHUB PAGES SITE
 
-Why the poster was missing
-The HTML refers to ./assets/cpl-promo.webp, but the previous website package did not include that asset. GitHub Pages cannot display a local image if its file is missing from the published repository.
+This version embeds the promotional poster directly inside index.html and includes the official YouTube and Instagram links. It does not need an assets folder.
 
-Files in this package
-- index.html
-- assets/cpl-promo.webp
+INSTALL
+1. Extract this ZIP on your computer.
+2. Open your GitHub repository: parttimegamerpc-cmyk/Introducing-Season-01-Cranked-Pro-League.
+3. Go to the folder/branch that GitHub Pages publishes from (usually the repository root on main).
+4. Replace the existing index.html with the index.html in this ZIP.
+5. Commit the change.
+6. Wait for the Pages deployment to finish, then open the website and press Ctrl+Shift+R.
 
-How to publish the fix
-1. Open the GitHub repository for your site.
-2. Upload/replace index.html at the repository root.
-3. Upload the assets folder and make sure cpl-promo.webp is inside it.
-4. Commit the changes to the branch/folder configured for GitHub Pages.
-5. Refresh the published site. If needed, hard-refresh with Ctrl+Shift+R.
-
-Important
-Keep the filename exactly cpl-promo.webp (all lowercase) and preserve the assets folder. GitHub Pages paths and filenames are case-sensitive. Do not upload the entire CPL_GitHubPages_Fix folder as a nested folder unless your Pages source is configured to publish from that folder.
+IMPORTANT
+- Do NOT upload the ZIP itself as the website.
+- Do NOT put index.html inside a new subfolder.
+- The poster is embedded directly in index.html, so no image asset upload is required.
+- If Pages is configured to publish from /docs or another folder, place index.html in that configured folder instead of the repository root.
