@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#09090d">
+  <meta name="description" content="Cranked Pro League — an open, seasonal competitive scene for Cranked. Qualify, race live, earn points, and compete for prizes.">
+  <title>Cranked Pro League — Run Your Line</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #08080c;
+      --panel: #111117;
+      --panel-2: #17171f;
+      --line: rgba(255,255,255,.12);
+      --muted: #aaaab8;
+      --paper: #f7f6f4;
+      --red: #ff4e38;
+      --blue: #2077ff;
+      --cyan: #37d7ff;
+      --max: 1180px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 92px; }
+    body { margin: 0; background: radial-gradient(ellipse at 2% 7%, rgba(255,73,47,.17), transparent 36%), radial-gradient(ellipse at 97% 70%, rgba(0,91,255,.16), transparent 40%), var(--bg); color: var(--paper); font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; line-height: 1.6; overflow-x: hidden; }
+    body::before { content: ""; position: fixed; inset: 0; z-index: -2; pointer-events: none; background: radial-gradient(ellipse at 2% 7%, rgba(255,73,47,.17), transparent 36%), radial-gradient(ellipse at 97% 70%, rgba(0,91,255,.16), transparent 40%); }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; }
+    .wrap { width: min(var(--max), calc(100% - 48px)); margin-inline: auto; }
+    .topline { height: 3px; background: linear-gradient(90deg, var(--red), #ff9a4b 32%, #693dff 63%, var(--cyan)); }
+    .site-header { position: sticky; top: 0; z-index: 20; background: rgba(8,8,12,.82); backdrop-filter: blur(18px); border-bottom: 1px solid rgba(255,255,255,.08); }
+    .nav { display:flex; justify-content:space-between; align-items:center; min-height:76px; gap:24px; }
+    .brand { display:flex; align-items:center; gap:12px; min-width: 210px; }
+    .brand-mark { position:relative; display:grid; place-items:center; width:42px; height:42px; border:1px solid rgba(255,255,255,.7); border-radius:50% 50% 45% 45%; font-family:"Barlow Condensed",sans-serif; font-weight:900; font-size:15px; letter-spacing:-1px; transform: skew(-5deg); }
+    .brand-mark::after { content:""; position:absolute; width:8px; height:8px; border-radius:50%; background:var(--red); top:6px; right:4px; box-shadow:0 0 18px var(--red); }
+    .brand-name { line-height:1.05; font-family:"Barlow Condensed",sans-serif; font-weight:900; letter-spacing:.06em; font-size:20px; }
+    .brand-name small { display:block; margin-top:4px; font:600 9px/1 Inter,sans-serif; letter-spacing:.23em; color:var(--muted); }
+    .nav-links { display:flex; align-items:center; gap:28px; color:#ceced8; font-size:12px; font-weight:700; letter-spacing:.09em; text-transform:uppercase; }
+    .nav-links a:not(.btn):hover { color:white; }
+    .btn { display:inline-flex; justify-content:center; align-items:center; gap:10px; min-height:47px; padding:0 19px; border:1px solid transparent; border-radius:4px; font-size:12px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; transition:transform .2s ease, background .2s ease, border-color .2s ease; cursor:pointer; }
+    .btn:hover { transform:translateY(-2px); }
+    .btn-primary { color:#fff; background:linear-gradient(110deg, #ff4e38, #f13a53 58%, #dd3a80); box-shadow:0 9px 30px rgba(255,65,60,.18); }
+    .btn-primary:hover { box-shadow:0 11px 36px rgba(255,65,60,.3); }
+    .btn-ghost { border-color:rgba(255,255,255,.22); background:rgba(255,255,255,.025); }
+    .btn-ghost:hover { background:rgba(255,255,255,.08); border-color:rgba(255,255,255,.42); }
+    .arrow { font-size:17px; line-height:0; }
+    .menu-toggle { display:none; border:1px solid var(--line); background:transparent; color:white; width:43px; height:43px; border-radius:4px; font-size:22px; }
+
+    .hero { position:relative; padding:76px 0 72px; isolation:isolate; }
+    .hero::before { content:""; position:absolute; z-index:-1; inset:0 0 -3%; background:linear-gradient(130deg, rgba(255,75,51,.07), transparent 39%, rgba(0,96,255,.05)); }
+    .hero-grid { display:grid; grid-template-columns: 1.03fr .97fr; gap:50px; align-items:center; }
+    .eyebrow { display:flex; align-items:center; gap:11px; color:#d8d8e1; text-transform:uppercase; letter-spacing:.19em; font-size:10px; font-weight:800; }
+    .eyebrow::before { content:""; width:28px; height:2px; background:var(--red); box-shadow:10px 0 20px var(--red); }
+    h1,h2,h3,p { margin-top:0; }
+    h1 { margin:22px 0 17px; max-width:680px; font-family:"Barlow Condensed", Impact, sans-serif; font-size:clamp(66px, 8.4vw, 112px); line-height:.83; letter-spacing:-.035em; font-weight:900; text-transform:uppercase; }
+    h1 span { display:block; color:transparent; -webkit-text-stroke:1.3px rgba(255,255,255,.87); }
+    .hero-copy { max-width:490px; color:#c2c2cf; font-size:15px; }
+    .hero-copy strong { color:#fff; font-weight:700; }
+    .hero-actions { display:flex; flex-wrap:wrap; gap:12px; margin-top:28px; }
+    .hero-note { display:flex; align-items:center; gap:10px; margin-top:29px; color:#a3a3b0; font-size:11px; }
+    .dot { width:7px; height:7px; border-radius:50%; background:#ff533e; box-shadow:0 0 0 5px rgba(255,83,62,.12); }
+    .hero-art { position:relative; }
+    .art-frame { position:relative; padding:9px; background:linear-gradient(140deg, rgba(255,255,255,.2), rgba(255,255,255,.025) 45%, rgba(54,125,255,.2)); border:1px solid rgba(255,255,255,.14); transform:rotate(1deg); box-shadow:0 30px 85px rgba(0,0,0,.45); }
+    .art-frame::before { content:"CPL / 001"; position:absolute; z-index:2; left:22px; top:21px; background:rgba(5,5,8,.82); padding:6px 9px; color:white; font-size:9px; font-weight:800; letter-spacing:.17em; }
+    .art-frame img { display:block; width:100%; height:auto; }
+    .art-caption { display:flex; justify-content:space-between; gap:16px; margin:16px 3px 0; color:#a7a7b5; text-transform:uppercase; letter-spacing:.11em; font-size:9px; font-weight:700; }
+    .art-caption span:last-child { color:#f4f4f8; }
+    .ticker { overflow:hidden; border-block:1px solid rgba(255,255,255,.12); background:rgba(255,255,255,.025); }
+    .ticker-track { display:flex; justify-content:space-around; align-items:center; gap:25px; min-height:58px; white-space:nowrap; text-transform:uppercase; letter-spacing:.13em; font-size:10px; font-weight:800; color:#d4d4df; }
+    .ticker b { color:var(--red); margin-right:9px; }
+
+    section { padding:105px 0; }
+    .section-head { display:flex; align-items:end; justify-content:space-between; gap:30px; margin-bottom:36px; }
+    .kicker { color:var(--red); text-transform:uppercase; letter-spacing:.2em; font-size:10px; font-weight:900; margin-bottom:12px; }
+    h2 { font-family:"Barlow Condensed", Impact, sans-serif; text-transform:uppercase; font-weight:900; letter-spacing:-.02em; font-size:clamp(43px, 5vw, 66px); line-height:.95; margin-bottom:0; }
+    .section-intro { max-width:430px; margin:0; color:var(--muted); font-size:13px; }
+    .manifesto { padding-top:78px; }
+    .manifesto-grid { display:grid; grid-template-columns:repeat(3,1fr); border:1px solid var(--line); background:rgba(255,255,255,.02); }
+    .manifesto-item { min-height:180px; padding:27px; border-right:1px solid var(--line); }
+    .manifesto-item:last-child { border-right:0; }
+    .mini-number { color:#72727e; font-size:10px; letter-spacing:.16em; font-weight:800; }
+    .manifesto-item h3 { margin:18px 0 7px; font-family:"Barlow Condensed",sans-serif; font-size:29px; line-height:1; text-transform:uppercase; }
+    .manifesto-item p { color:var(--muted); font-size:12px; margin:0; max-width:260px; }
+    .section-dark { background:linear-gradient(180deg,rgba(255,255,255,.018),rgba(255,255,255,.035)); border-block:1px solid rgba(255,255,255,.06); }
+    .steps { display:grid; grid-template-columns:repeat(3,1fr); gap:15px; }
+    .step-card { position:relative; min-height:245px; padding:28px; background:var(--panel); border:1px solid var(--line); overflow:hidden; }
+    .step-card::after { content:attr(data-step); position:absolute; right:13px; bottom:-37px; font-family:"Barlow Condensed",sans-serif; font-size:150px; line-height:1; font-weight:900; color:rgba(255,255,255,.035); pointer-events:none; }
+    .step-icon { width:40px; height:40px; display:grid; place-items:center; border:1px solid rgba(255,255,255,.19); color:#fff; font-size:18px; margin-bottom:29px; }
+    .step-card h3 { font-family:"Barlow Condensed",sans-serif; font-weight:800; font-size:29px; line-height:1; text-transform:uppercase; margin-bottom:10px; }
+    .step-card p { position:relative; z-index:1; color:var(--muted); font-size:12px; max-width:290px; margin-bottom:0; }
+    .requirement-layout { display:grid; grid-template-columns:.78fr 1.22fr; gap:60px; align-items:start; }
+    .requirement-heading { position:sticky; top:120px; }
+    .requirement-heading p { max-width:320px; color:var(--muted); font-size:13px; margin-top:20px; }
+    .requirements { border-top:1px solid var(--line); }
+    .requirement { display:grid; grid-template-columns:53px 1fr; gap:20px; padding:24px 0; border-bottom:1px solid var(--line); }
+    .requirement-index { color:var(--red); font-family:"Barlow Condensed",sans-serif; font-size:27px; font-weight:800; }
+    .requirement h3 { font-size:14px; margin:0 0 7px; }
+    .requirement p { color:var(--muted); font-size:12px; margin:0; max-width:600px; }
+    .microtag { display:inline-block; margin-top:12px; padding:4px 7px; border:1px solid rgba(255,255,255,.16); color:#dedee7; font-size:9px; letter-spacing:.12em; text-transform:uppercase; font-weight:800; }
+
+    .qualify { position:relative; overflow:hidden; background:linear-gradient(110deg, rgba(255,70,50,.10), transparent 54%); }
+    .qualify::after { content:"QUALIFY"; position:absolute; right:-20px; bottom:-72px; font-family:"Barlow Condensed",sans-serif; font-size:clamp(100px,20vw,250px); font-weight:900; color:rgba(255,255,255,.025); line-height:1; pointer-events:none; }
+    .qualify-grid { display:grid; grid-template-columns:1fr .8fr; gap:58px; align-items:center; }
+    .qualify-copy > p { color:var(--muted); font-size:13px; max-width:580px; }
+    .qualify-list { list-style:none; padding:0; margin:27px 0 0; }
+    .qualify-list li { display:flex; align-items:start; gap:12px; font-size:12px; color:#dedee7; margin:14px 0; }
+    .check { display:grid; place-items:center; flex:0 0 20px; height:20px; background:rgba(255,77,56,.13); color:#ff765e; border:1px solid rgba(255,77,56,.28); font-size:11px; }
+    .channel-card { position:relative; z-index:1; padding:27px; border:1px solid var(--line); background:rgba(11,11,16,.85); box-shadow:0 18px 60px rgba(0,0,0,.28); }
+    .channel-card .label { color:#8f8f9f; text-transform:uppercase; letter-spacing:.17em; font-size:9px; font-weight:900; }
+    .channel-card h3 { font-family:"Barlow Condensed",sans-serif; font-size:34px; text-transform:uppercase; line-height:1; margin:12px 0 10px; }
+    .channel-card p { color:var(--muted); font-size:12px; }
+    .channel-id { padding:12px; background:#07070a; border:1px solid rgba(255,255,255,.1); color:#bdbdca; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:10px; overflow-wrap:anywhere; margin:17px 0; }
+
+    .race-banner { position:relative; overflow:hidden; padding:40px; border:1px solid rgba(255,255,255,.16); background:linear-gradient(115deg,rgba(255,68,50,.15),rgba(17,17,24,.92) 52%,rgba(0,96,255,.18)); }
+    .race-banner::after { content:"03 LAPS"; position:absolute; right:-7px; top:14px; font-family:"Barlow Condensed",sans-serif; font-size:clamp(70px,13vw,145px); font-weight:900; line-height:.9; color:rgba(255,255,255,.045); pointer-events:none; }
+    .race-banner-top { display:flex; align-items:center; justify-content:space-between; gap:20px; margin-bottom:32px; }
+    .live-stamp { display:inline-flex; align-items:center; gap:8px; color:#ff897c; font-size:10px; text-transform:uppercase; letter-spacing:.17em; font-weight:900; }
+    .live-stamp::before { content:""; width:6px; height:6px; background:var(--red); border-radius:50%; box-shadow:0 0 0 5px rgba(255,78,56,.14); }
+    .race-columns { display:grid; grid-template-columns:repeat(3,1fr); gap:32px; position:relative; z-index:1; }
+    .race-column { border-top:1px solid rgba(255,255,255,.24); padding-top:19px; }
+    .race-column .num { color:var(--red); font:800 13px "Barlow Condensed",sans-serif; }
+    .race-column h3 { margin:12px 0 8px; font:800 28px/1 "Barlow Condensed",sans-serif; text-transform:uppercase; }
+    .race-column p { color:#b9b9c7; font-size:12px; margin:0; max-width:300px; }
+    .race-rules { display:grid; grid-template-columns:.6fr 1.4fr; gap:30px; margin-top:28px; padding-top:28px; border-top:1px solid rgba(255,255,255,.13); position:relative; z-index:1; }
+    .race-rules h3 { font:800 23px/1 "Barlow Condensed",sans-serif; text-transform:uppercase; margin:0; }
+    .rule-tags { display:flex; flex-wrap:wrap; gap:8px; }
+    .rule-tags span { padding:7px 10px; border:1px solid rgba(255,255,255,.14); color:#dedee8; background:rgba(0,0,0,.18); font-size:10px; }
+
+    .prizes { background:linear-gradient(180deg,rgba(255,255,255,.025),transparent 90%); }
+    .prize-grid { display:grid; grid-template-columns:1.15fr 1fr; gap:15px; }
+    .prize-card { min-height:300px; position:relative; overflow:hidden; padding:30px; background:var(--panel); border:1px solid var(--line); }
+    .prize-card.first { background:linear-gradient(130deg,rgba(255,72,51,.15),var(--panel) 66%); border-color:rgba(255,88,64,.34); }
+    .prize-card.second { background:linear-gradient(130deg,rgba(0,112,255,.14),var(--panel) 68%); }
+    .place { color:#c7c7d3; font-size:10px; font-weight:900; letter-spacing:.18em; text-transform:uppercase; }
+    .prize-value { position:relative; z-index:1; margin:28px 0 10px; font:900 clamp(50px,6vw,78px)/.9 "Barlow Condensed",sans-serif; letter-spacing:-.02em; }
+    .prize-card h3 { font:800 26px/1 "Barlow Condensed",sans-serif; text-transform:uppercase; margin:0 0 12px; }
+    .prize-card p { max-width:420px; color:var(--muted); font-size:12px; margin:0; }
+    .prize-badge { position:absolute; right:19px; top:15px; color:rgba(255,255,255,.09); font:900 90px/1 "Barlow Condensed",sans-serif; }
+    .prize-note { margin-top:15px; color:#8d8d9b; font-size:10px; }
+    .community-grid { display:grid; grid-template-columns:1fr 1fr; gap:15px; }
+    .community-card { padding:26px; border:1px solid var(--line); background:rgba(255,255,255,.025); }
+    .community-card .symbol { color:var(--red); font-size:22px; margin-bottom:21px; }
+    .community-card h3 { margin-bottom:8px; font:800 27px/1 "Barlow Condensed",sans-serif; text-transform:uppercase; }
+    .community-card p { font-size:12px; color:var(--muted); margin-bottom:16px; max-width:450px; }
+    .text-link { font-size:10px; font-weight:900; letter-spacing:.13em; text-transform:uppercase; border-bottom:1px solid rgba(255,255,255,.45); padding-bottom:4px; }
+    .questions-bar { margin-top:38px; display:flex; align-items:center; justify-content:space-between; gap:25px; padding:23px 25px; border:1px solid var(--line); background:linear-gradient(90deg,rgba(255,255,255,.045),rgba(255,255,255,.015)); }
+    .questions-bar strong { display:block; font-family:"Barlow Condensed",sans-serif; font-size:25px; text-transform:uppercase; line-height:1.05; }
+    .questions-bar span { color:var(--muted); font-size:11px; }
+    footer { border-top:1px solid var(--line); padding:28px 0; color:#8c8c9b; font-size:10px; }
+    .footer-inner { display:flex; align-items:center; justify-content:space-between; gap:20px; }
+    .footer-brand { color:#fff; font:800 18px "Barlow Condensed",sans-serif; letter-spacing:.07em; }
+    .footer-note { text-align:right; }
+    .footer-note a { color:#d9d9e5; border-bottom:1px solid rgba(255,255,255,.25); }
+
+    @media (max-width: 900px) {
+      .wrap { width:min(100% - 36px, var(--max)); }
+      .nav-links { gap:16px; }
+      .nav-links a:not(.btn) { font-size:10px; }
+      .hero-grid { gap:30px; }
+      .hero { padding:58px 0; }
+      .requirement-layout { gap:35px; }
+      .qualify-grid { gap:30px; }
+      .race-banner { padding:29px; }
+    }
+    @media (max-width: 700px) {
+      .wrap { width:calc(100% - 32px); }
+      .nav { min-height:68px; }
+      .brand { min-width:0; }
+      .menu-toggle { display:block; }
+      .nav-links { display:none; position:absolute; top:68px; left:0; right:0; padding:18px 20px 22px; background:rgba(8,8,12,.98); border-bottom:1px solid var(--line); flex-direction:column; align-items:stretch; gap:0; }
+      .nav-links.open { display:flex; }
+      .nav-links a:not(.btn) { padding:14px 0; border-bottom:1px solid rgba(255,255,255,.08); font-size:11px; }
+      .nav-links .btn { margin-top:15px; }
+      .hero { padding:50px 0 48px; }
+      .hero-grid { grid-template-columns:1fr; gap:34px; }
+      h1 { font-size:clamp(68px,19vw,100px); }
+      .hero-copy { font-size:13px; }
+      .hero-art { max-width:600px; margin-inline:5px; }
+      .art-frame { transform:none; }
+      .art-frame::before { font-size:8px; }
+      .ticker-track { justify-content:flex-start; padding-left:18px; gap:28px; min-height:48px; font-size:9px; }
+      section { padding:72px 0; }
+      .section-head { align-items:start; flex-direction:column; gap:17px; margin-bottom:28px; }
+      h2 { font-size:52px; }
+      .manifesto { padding-top:45px; }
+      .manifesto-grid { grid-template-columns:1fr; }
+      .manifesto-item { min-height:0; border-right:0; border-bottom:1px solid var(--line); padding:22px; }
+      .manifesto-item:last-child { border-bottom:0; }
+      .manifesto-item h3 { margin-top:12px; }
+      .steps { grid-template-columns:1fr; }
+      .step-card { min-height:205px; }
+      .step-icon { margin-bottom:20px; }
+      .requirement-layout,.qualify-grid { grid-template-columns:1fr; gap:28px; }
+      .requirement-heading { position:static; }
+      .requirement-heading p { margin-top:13px; }
+      .requirement { grid-template-columns:34px 1fr; gap:13px; padding:20px 0; }
+      .qualify::after { font-size:120px; bottom:-28px; }
+      .race-banner { padding:23px 20px; }
+      .race-banner-top { align-items:start; flex-direction:column; margin-bottom:27px; }
+      .race-columns { grid-template-columns:1fr; gap:19px; }
+      .race-column { padding-top:15px; }
+      .race-column h3 { font-size:26px; }
+      .race-rules { grid-template-columns:1fr; gap:16px; margin-top:22px; padding-top:22px; }
+      .prize-grid,.community-grid { grid-template-columns:1fr; }
+      .prize-card { min-height:255px; padding:25px; }
+      .prize-value { font-size:64px; }
+      .questions-bar { flex-direction:column; align-items:flex-start; padding:20px; }
+      .footer-inner { align-items:flex-start; flex-direction:column; }
+      .footer-note { text-align:left; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *,*::before,*::after { scroll-behavior:auto !important; transition:none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="site-header">
+    <div class="wrap nav">
+      <a class="brand" href="#top" aria-label="Cranked Pro League home">
+        <span class="brand-mark" aria-hidden="true">CPL</span>
+        <span class="brand-name">CRANKED PRO LEAGUE<small>THE COMPETITIVE SCENE</small></span>
+      </a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Open navigation" aria-expanded="false">☰</button>
+      <nav class="nav-links" id="navLinks" aria-label="Main navigation">
+        <a href="#format">Format</a>
+        <a href="#compete">Compete</a>
+        <a href="#race-day">Race day</a>
+        <a href="#prizes">Prizes</a>
+        <a class="btn btn-primary" href="https://discord.com/invite/Eea5utVGcG" target="_blank" rel="noopener noreferrer">Join the Discord <span class="arrow">↗</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div>
+          <div class="eyebrow">Introducing · Season 01</div>
+          <h1>Cranked <span>Pro League</span></h1>
+          <p class="hero-copy"><strong>Cranked's first ever competitive scene is here.</strong> Compete through a seasonal format to gain points, chase your best time, and win prizes. Join the Discord at discord.com/invite/Eea5utVGcG or through the link on my profile.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="https://discord.com/invite/Eea5utVGcG" target="_blank" rel="noopener noreferrer">Enter the Discord <span class="arrow">↗</span></a>
+            <a class="btn btn-ghost" href="#compete">How to compete <span class="arrow">↓</span></a>
+          </div>
+          <div class="hero-note"><span class="dot"></span> Open to all athletes. No Patreon subscription required.</div>
+        </div>
+        <div class="hero-art">
+          <div class="art-frame"><img src="assets/cpl-promo.webp" alt="Cranked Pro League promotional poster with red and blue lighting and CPL badge" fetchpriority="high"></div>
+          <div class="art-caption"><span>Cranked Pro League / Official</span><span>Compete · Qualify · Race</span></div>
+        </div>
+      </div>
+    </section>
+
+    <div class="ticker" aria-label="League highlights">
+      <div class="wrap ticker-track">
+        <span><b>✳</b> Accessible to all</span><span><b>✳</b> Seasonal format</span><span><b>✳</b> Live race days</span><span><b>✳</b> Points & prizes</span>
+      </div>
+    </div>
+
+    <section class="manifesto" id="format">
+      <div class="wrap">
+        <div class="section-head">
+          <div><div class="kicker">The league in three parts</div><h2>Your run.<br>Your rank.</h2></div>
+          <p class="section-intro">Build your best time, bring it to race day, and see where you land on the standings. Follow the events live on Discord or catch the playback after it's all over.</p>
+        </div>
+        <div class="manifesto-grid">
+          <article class="manifesto-item"><div class="mini-number">01 / OPEN ENTRY</div><h3>Accessible to all.</h3><p>No need to pay for the Patreon. Anyone can compete using the Cranked demo.</p></article>
+          <article class="manifesto-item"><div class="mini-number">02 / SEASONAL</div><h3>Earn your points.</h3><p>Compete through the season, set your best time, and work your way up the standings.</p></article>
+          <article class="manifesto-item"><div class="mini-number">03 / LIVE EVENTS</div><h3>All live.</h3><p>Watch the events unfold live through Discord or watch the playback after it is all over.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-dark" id="compete">
+      <div class="wrap">
+        <div class="section-head">
+          <div><div class="kicker">Before you hit the track</div><h2>Ready to<br>compete?</h2></div>
+          <p class="section-intro">A short setup checklist to keep competition fair, footage clear, and race day running smoothly.</p>
+        </div>
+        <div class="steps">
+          <article class="step-card" data-step="01"><div class="step-icon">↻</div><h3>Install the demo</h3><p>Have the most up-to-date version of the Cranked demo installed. The Patreon version gives access to more maps, but CPL will use the demo for now to keep the league inclusive.</p></article>
+          <article class="step-card" data-step="02"><div class="step-icon">▣</div><h3>Record your run</h3><p>You will need recording software that can capture at least 720p resolution, including in-game audio.</p></article>
+          <article class="step-card" data-step="03"><div class="step-icon">◉</div><h3>Be ready to stream</h3><p>You must be able to cast your live Cranked gameplay to a Discord call when you are called up on race day.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap requirement-layout">
+        <div class="requirement-heading"><div class="kicker">Athlete checklist</div><h2>Three things.<br>Then race.</h2><p>Get these essentials sorted before qualifying opens. The demo is the standard for CPL Season 1, so everyone starts with access to the same version.</p></div>
+        <div class="requirements">
+          <article class="requirement"><div class="requirement-index">01</div><div><h3>The latest Cranked demo</h3><p>Update to the most recent demo version. While the Patreon version offers more map access, CPL will be using the demo for now to allow more inclusivity in the community.</p><span class="microtag">Required to compete</span></div></article>
+          <article class="requirement"><div class="requirement-index">02</div><div><h3>720p recording with game audio</h3><p>Use recording software capable of recording at least 720p, with in-game audio included in the footage.</p><span class="microtag">Footage required</span></div></article>
+          <article class="requirement"><div class="requirement-index">03</div><div><h3>Discord screen sharing</h3><p>Make sure you can cast your live Cranked gameplay to a Discord call. You will need this for your race-day run.</p><span class="microtag">Race-day requirement</span></div></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="qualify section-dark" id="qualifying">
+      <div class="wrap qualify-grid">
+        <div class="qualify-copy"><div class="kicker">Phase 01 / Set your time</div><h2>Qualifying<br>starts here.</h2><p>Once the event track is announced, the qualifying submissions channel will open and athletes can post their qualifying clips. You will have a set amount of time to put down your best time.</p>
+          <ul class="qualify-list">
+            <li><span class="check">✓</span><span>Wait for the event track announcement.</span></li>
+            <li><span class="check">✓</span><span>Record your best run and submit your qualifying clip in the designated channel.</span></li>
+            <li><span class="check">✓</span><span>For help submitting footage, check the pinned post in the qualifying channel.</span></li>
+          </ul>
+        </div>
+        <aside class="channel-card">
+          <div class="label">Discord / Event channel</div>
+          <h3>Submit your qualifier</h3>
+          <p>The qualifying channel opens once the event track is announced. Check the pinned post for clip-submission instructions.</p>
+          <div class="channel-id">Channel ID: 1559601060258258965</div>
+          <a class="btn btn-primary" href="https://discord.com/invite/Eea5utVGcG" target="_blank" rel="noopener noreferrer">Open Discord <span class="arrow">↗</span></a>
+        </aside>
+      </div>
+    </section>
+
+    <section id="race-day">
+      <div class="wrap">
+        <div class="section-head"><div><div class="kicker">Phase 02 / Race day</div><h2>Show up.<br>Send it.</h2></div><p class="section-intro">Once qualifying is complete and the athletes are ready, everyone joins the Cranked Pro League stage. Athletes are called up from slowest to fastest qualifying time to stream their gameplay.</p></div>
+        <div class="race-banner">
+          <div class="race-banner-top"><span class="live-stamp">Live event protocol</span><span class="microtag">One stage · Three laps</span></div>
+          <div class="race-columns">
+            <article class="race-column"><div class="num">01 / GET CALLED UP</div><h3>Line up</h3><p>Athletes are called in qualifying-time order, from slowest to fastest. Be ready when your turn comes around.</p></article>
+            <article class="race-column"><div class="num">02 / SET YOUR BEST</div><h3>Three laps</h3><p>Each athlete gets three laps to set their best time. Make them count.</p></article>
+            <article class="race-column"><div class="num">03 / THE STANDINGS</div><h3>Points awarded</h3><p>At the end of the stream, athletes receive their points and the standings are updated.</p></article>
+          </div>
+          <div class="race-rules"><h3>When you're called up</h3><div class="rule-tags"><span>Stay muted</span><span>Share Cranked only</span><span>No music</span><span>No other audible stream audio</span><span>Be ready to race</span></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="prizes section-dark" id="prizes">
+      <div class="wrap">
+        <div class="section-head"><div><div class="kicker">Season 01 rewards</div><h2>Race for<br>the rewards.</h2></div><p class="section-intro">Season 1 is getting started, and the first champions will take home a little something extra for their effort.</p></div>
+        <div class="prize-grid">
+          <article class="prize-card first"><div class="prize-badge">01</div><div class="place">First place / Season 01 champion</div><div class="prize-value">$25 CAD</div><h3>Gift card + custom rank</h3><p>The Season 1 champion receives a $25 CAD gift card as well as a custom rank. It's not much, but the prize is being paid out of pocket, and this is the best we can do for now.</p></article>
+          <article class="prize-card second"><div class="prize-badge">02</div><div class="place">Second place / Runner-up</div><div class="prize-value">Your pick.</div><h3>Patreon or Steam</h3><p>Choose one month of the Cranked Patreon Green tier (valued at $7.50) or a $5 CAD Steam gift card.</p></article>
+        </div>
+        <p class="prize-note">Prize details are as announced for Season 1.</p>
+      </div>
+    </section>
+
+    <section id="community">
+      <div class="wrap">
+        <div class="section-head"><div><div class="kicker">Help build the scene</div><h2>There's room<br>for more.</h2></div><p class="section-intro">We're looking to grow the player count and make the league accessible to athletes around the world. You can help.</p></div>
+        <div class="community-grid">
+          <article class="community-card"><div class="symbol">↗</div><h3>Bring a friend</h3><p>We're currently looking to get the player count up. Know someone who might be interested? Invite them to join the league and compete.</p><a class="text-link" href="https://discord.com/invite/Eea5utVGcG" target="_blank" rel="noopener noreferrer">Invite them to CPL ↗</a></article>
+          <article class="community-card"><div class="symbol">✳</div><h3>Become a moderator</h3><p>We're looking for moderators to help keep the server clean and run events. Interested? Send the league organiser a DM in Discord.</p><a class="text-link" href="https://discord.com/invite/Eea5utVGcG" target="_blank" rel="noopener noreferrer">Contact us on Discord ↗</a></article>
+          <article class="community-card"><div class="symbol">◷</div><h3>Tell us your time zone</h3><p>Players are spread around the world, and CPL wants to be as accessible as possible. Let the community know your time zone in the Discord poll.</p><a class="text-link" href="https://discord.com/invite/Eea5utVGcG" target="_blank" rel="noopener noreferrer">Answer the community poll ↗</a></article>
+          <article class="community-card"><div class="symbol">?</div><h3>Need a hand?</h3><p>Have a question about the format, submitting a clip, or race day? Reach out in the CPL Discord questions channel.</p><a class="text-link" href="https://discord.com/invite/Eea5utVGcG" target="_blank" rel="noopener noreferrer">Ask the community ↗</a></article>
+        </div>
+        <div class="questions-bar"><div><strong>Welcome, athletes.</strong><span>Thanks for tuning in. See you on the track.</span></div><a class="btn btn-primary" href="https://discord.com/invite/Eea5utVGcG" target="_blank" rel="noopener noreferrer">Join Cranked Pro League <span class="arrow">↗</span></a></div>
+        <p class="prize-note">Questions channel ID: 1559596330165338173 · Qualifying submissions channel ID: 1559601060258258965 · Athlete announcement role ID: 1559568668071956550</p>
+      </div>
+    </section>
+  </main>
+
+  <footer><div class="wrap footer-inner"><div><div class="footer-brand">CRANKED PRO LEAGUE</div><div>Season 01 · Run your line.</div></div><div class="footer-note">Thanks for tuning in,<br><strong style="color:#e9e9ef">— Cranked Pro League</strong><br><a href="https://discord.com/invite/Eea5utVGcG" target="_blank" rel="noopener noreferrer">discord.com/invite/Eea5utVGcG</a></div></div></footer>
+  <script>
+    const menuToggle = document.getElementById('menuToggle');
+    const navLinks = document.getElementById('navLinks');
+    menuToggle.addEventListener('click', () => {
+      const isOpen = navLinks.classList.toggle('open');
+      menuToggle.setAttribute('aria-expanded', String(isOpen));
+      menuToggle.setAttribute('aria-label', isOpen ? 'Close navigation' : 'Open navigation');
+      menuToggle.textContent = isOpen ? '×' : '☰';
+    });
+    navLinks.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
+      navLinks.classList.remove('open');
+      menuToggle.setAttribute('aria-expanded', 'false');
+      menuToggle.setAttribute('aria-label', 'Open navigation');
+      menuToggle.textContent = '☰';
+    }));
+  </script>
+</body>
+</html>
